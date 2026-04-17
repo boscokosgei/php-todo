@@ -38,6 +38,13 @@ pipeline {
               mkdir -p bootstrap/cache
               chmod -R 775 bootstrap/cache
 
+              mkdir -p storage/framework/sessions
+              mkdir -p storage/framework/views
+              mkdir -p storage/framework/cache
+            
+              chmod -R 777 database
+              chmod -R 777 storage
+
               composer install
               php artisan key:generate
               php artisan migrate --force
