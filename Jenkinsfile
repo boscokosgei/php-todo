@@ -35,6 +35,9 @@ pipeline {
               mkdir -p database
               touch database/database.sqlite
 
+              mkdir -p bootstrap/cache
+              chmod -R 775 bootstrap/cache
+
               composer install
               php artisan key:generate
               php artisan migrate --force
