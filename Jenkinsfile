@@ -55,9 +55,16 @@ pipeline {
 
     stage('Execute Unit Tests') {
       steps {
-        script {
-          docker.image('php:7.4-cli').inside {
-            sh './vendor/bin/phpunit'
+          script {
+            docker.image('php:7.4-cli').inside('-u root') {
+              sh '''
+                mkdir -p storage/framework/sessions
+                mkdir -p storage/framework/views
+                mkdir -p storage/framework/cache
+      
+                chmod -R 777 storage
+                ./vendor/bin/phpunit
+              '''
           }
         }
       }
