@@ -1,46 +1,34 @@
 pipeline {
   agent any
-  stages {
-    stage('') {
-      steps {
-        sh '''pipeline {
-   agent any 
 
   stages {
 
-     stage("Initial cleanup") {
-          steps {
-            dir("${WORKSPACE}") {
-              deleteDir()
-            }
-          }
-        }
-  
-    stage(\'Checkout SCM\') {
+    stage("Initial cleanup") {
       steps {
-            git branch: \'main\', url: \'https://github.com/StegTechHub/php-todo.git\'
+        deleteDir()
       }
     }
 
-    stage(\'Prepare Dependencies\') {
+    stage('Checkout SCM') {
       steps {
-             sh \'mv .env.sample .env\'
-             sh \'composer install\'
-             sh \'php artisan migrate\'
-             sh \'php artisan db:seed\'
-             sh \'php artisan key:generate\'
+        git branch: 'main', url: 'https://github.com/StegTechHub/php-todo.git'
       }
     }
-    stage(\'Execute Unit Tests\') {
-      steps {
-             sh \'./vendor/bin/phpunit\'
-      }
-    }
-  }
-} 
-'''
-        }
-      }
 
+    stage('Prepare Dependencies') {
+      steps {
+        sh 'mv .env.sample .env'
+        sh 'composer install'
+        sh 'php artisan migrate'
+        sh 'php artisan db:seed'
+        sh 'php artisan key:generate'
+      }
+    }
+
+    stage('Execute Unit Tests') {
+      steps {
+        sh './vendor/bin/phpunit'
+      }
     }
   }
+}
