@@ -1,6 +1,8 @@
 pipeline {
   agent any
-
+    docker {
+      image 'php:7.4-cli'
+    }
   stages {
 
     stage("Initial cleanup") {
@@ -18,6 +20,11 @@ pipeline {
     stage('Prepare Dependencies') {
       steps {
         sh '''
+        apt-get update
+        apt-get install -y unzip curl git
+
+        curl -sS https://getcomposer.org/installer | php
+        mv composer.phar /usr/local/bin/composer
         echo "APP_ENV=testing" > .env
         echo "APP_KEY=" >> .env
         echo "APP_DEBUG=true" >> .env
