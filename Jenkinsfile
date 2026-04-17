@@ -12,7 +12,7 @@ pipeline {
     stage('Prepare Dependencies') {
       steps {
         script {
-          docker.image('php:7.4-cli').inside {
+          docker.image('php:7.4-cli').inside('-u root') {
             sh '''
               apt-get update
               apt-get install -y unzip curl git
