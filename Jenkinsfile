@@ -8,6 +8,12 @@ pipeline {
         deleteDir()
       }
     }
+    stage('Chcekout SCM') {
+      steps { 
+          git branch: 'main' , url:
+            'https://github.com/StegTechHub/php-todo.git'
+      }
+    }
   
     stage('Prepare Dependencies') {
       steps {
