@@ -17,11 +17,19 @@ pipeline {
 
     stage('Prepare Dependencies') {
       steps {
-        sh 'cp .env.sample .env'
-        sh 'composer install'
-        sh 'php artisan migrate'
-        sh 'php artisan db:seed'
-        sh 'php artisan key:generate'
+        sh '''
+        echo "APP_ENV=testing" > .env
+        echo "APP_KEY=" >> .env
+        echo "APP_DEBUG=true" >> .env
+        echo "DB_CONNECTION=sqlite" >> .env
+        echo "DB_DATABASE=database/database.sqlite" >> .env
+
+        touch database/database.sqlite
+        composer install
+        php artisan migrate
+        php artisan db:seed
+        php artisan key:generate
+        '''
       }
     }
 
