@@ -8,6 +8,10 @@ pipeline {
         deleteDir()
       }
     }
+    stage('Checkout SCM') {
+      steps { git branch: 'main', url: 'https://github.com/StegTechHub/php-todo.git' 
+            } 
+    }
 
     stage('Prepare Dependencies') {
       steps {
@@ -25,7 +29,8 @@ pipeline {
               echo "APP_DEBUG=true" >> .env
               echo "DB_CONNECTION=sqlite" >> .env
               echo "DB_DATABASE=database/database.sqlite" >> .env
-
+              
+              mkdir -p database
               touch database/database.sqlite
 
               composer install
